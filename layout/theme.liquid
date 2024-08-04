@@ -6,6 +6,7 @@
     <meta name='viewport' content='width=device-width,initial-scale=1'>
     <meta name='theme-color' content=''>
     <link rel='canonical' href='{{ canonical_url }}'>
+    <script src="https://cdn.tailwindcss.com"></script>
 
     {%- if settings.favicon != blank -%}
       <link rel='icon' type='image/png' href='{{ settings.favicon | image_url: width: 32, height: 32 }}'>
@@ -258,6 +259,67 @@
         }
       }
     {% endstyle %}
+
+{% style %}
+  @font-face {
+    font-family: "AuxMono Regular";
+    src: url("{{ 'AuxMono-Regular.woff2' | file_url }}") format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "American Typewriter";
+    src: url("{{ 'American-Typewriter.woff2' | file_url }}") format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Standard Book";
+    src: url("{{ 'standard-book.woff2' | file_url }}") format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Standard Bold";
+    src: url("{{ 'standard-bold.woff2' | file_url }}") format("woff2");
+    font-display: swap;
+  }
+{% endstyle %}
+
+<script>
+  tailwind.config = {
+    theme: {
+    extend: {
+      fontFamily: {
+        'standard': ['Standard', 'sans-serif'],
+        'american-typewriter': ['American Typewriter', 'Courier', 'monospace'],
+      },
+      colors: {
+        'standard-blue': '#2A55EB',
+      },
+    },
+    screens: {
+      sm: '320px',
+      md: '750px',
+      lg: '990px',
+      xlg: '1440px',
+      x2lg: '1920px',
+      pageMaxWidth: '1440px',
+    },
+  }
+  }
+</script>
+
+<script>
+    (function() {
+        setTimeout(function() {
+            var header = document.getElementById('header');
+            if (header && !header.classList.contains('header-visible')) {
+                header.classList.add('header-visible');
+            }
+        }, 500); // Adjust this delay as needed
+    })();
+</script>
 
     {{ 'app.css' | asset_url | stylesheet_tag }}
     {{ 'base.css' | asset_url | stylesheet_tag }}

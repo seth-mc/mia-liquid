@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Standard';
+  src: url('https://cdn.shopify.com/s/files/1/0841/1529/2182/files/standard-bold.woff2')
+    format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'American Typewriter';
+  src: url('https://cdn.shopify.com/s/files/1/0841/1529/2182/files/American_Typewriter.woff2?v=1722788549')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --standard-blue: #2a55eb;
+}

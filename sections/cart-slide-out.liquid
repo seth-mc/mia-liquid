@@ -1,0 +1,50 @@
+<div id="cart-slide-out" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+  <div class="p-4 h-full flex flex-col">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-american-typewriter text-standard-blue">Your Cart</h2>
+      <button id="close-cart" class="text-standard-blue">&times;</button>
+    </div>
+
+    <div class="font-american-typewriter text-standard-blue mb-4 grid grid-cols-3">
+      <span>Item</span>
+      <span class="text-right">Price</span>
+      <span class="text-right">Remove</span>
+    </div>
+
+    <ul class="flex-grow overflow-y-auto">
+      {% for item in cart.items %}
+        <li class="mb-4 pb-4 border-b border-standard-blue last:border-b-0">
+          <div class="grid grid-cols-3 gap-4 items-center">
+            <div class="col-span-2 flex items-center">
+              <a href="{{ item.url }}" class="mr-4">
+                <img src="{{ item.image | img_url: '100x100', crop: 'center' }}" alt="{{ item.title | escape }}" class="w-16 h-16 object-cover">
+              </a>
+              <div>
+                <a href="{{ item.url }}" class="font-bold">{{ item.product.title }}</a>
+                <p class="text-sm">{{ item.variant.title }}</p>
+                <div class="flex items-center mt-2">
+                  <button class="quantity-adjust" data-action="decrease" data-item="{{ item.key }}">-</button>
+                  <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="w-12 text-center mx-2" data-item="{{ item.key }}">
+                  <button class="quantity-adjust" data-action="increase" data-item="{{ item.key }}">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              {{ item.final_line_price | money }}
+            </div>
+            <button class="remove-item text-right" data-item="{{ item.key }}">&times;</button>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="mt-4 font-american-typewriter text-standard-blue">
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-xl">Total</span>
+        <span class="text-xl">{{ cart.total_price | money }}</span>
+      </div>
+      <p class="text-sm mb-4">Shipping & taxes calculated at checkout</p>
+      <a href="/checkout" class="block w-full py-2 px-4 bg-standard-blue text-white text-center">Checkout</a>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,27 @@
+@font-face {
+  font-family: 'AuxMono Regular';
+  src: url("{{ 'AuxMono-Regular.woff2' | file_url }}") format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'American Typewriter';
+  src: url("{{ 'American-Typewriter.woff2' | file_url }}") format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Standard Book';
+  src: url("{{ 'standard-book.woff2' | file_url }}") format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Standard Bold';
+  src: url("{{ 'standard-bold.woff2' | file_url }}") format('woff2');
+  font-display: swap;
+}
+
 .list-menu--right {
   right: 0;
 }
