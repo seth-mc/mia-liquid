@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateLoaderText() {
     let progress = Math.round(counter.value);
     loaderNumber.textContent = progress;
+    loaderProgress.style.width = `${progress}%`;
   }
 
   function startLoader() {
@@ -35,7 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loader.style.display = 'block';
 
-    let tl = gsap.timeline({
+    gsap.to(counter, {
+      value: 100,
+      duration: loaderDuration,
+      ease: CustomEase.create(
+        'custom',
+        'M0,0 C0.041,0.081 0.268,0.407 0.47,0.501 0.701,0.608 0.695,1 1,1',
+      ),
+      onUpdate: updateLoaderText,
       onComplete: () => {
         gsap.to(loader, {
           duration: 0.5,
@@ -48,49 +56,22 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
 
-    tl.to(counter, {
-      value: 100,
-      duration: loaderDuration,
-      ease: CustomEase.create(
-        'custom',
-        'M0,0 C0.041,0.081 0.268,0.407 0.47,0.501 0.701,0.608 0.695,1 1,1',
-      ),
-      onUpdate: updateLoaderText,
+    gsap.from(loaderQuote, {
+      x: 100,
+      opacity: 0,
+      duration: 1,
+      ease: 'power2.out',
+      delay: 0.5,
     });
 
-    tl.to(
-      loaderProgress,
-      {
-        height: '100%',
-        duration: loaderDuration,
-        ease: CustomEase.create(
-          'custom',
-          'M0,0 C0.041,0.081 0.268,0.407 0.47,0.501 0.701,0.608 0.695,1 1,1',
-        ),
-      },
-      0,
-    );
-
-    tl.from(
-      loaderQuote,
-      {
-        x: 100,
-        opacity: 0,
-        duration: 1,
-        ease: 'power2.out',
-      },
-      0.5,
-    );
-
-    tl.from(
-      loaderImage,
-      {
+    if (window.innerWidth >= 768) {
+      gsap.from(loaderImage, {
         clipPath: 'inset(0 100% 0 0)',
         duration: 1.5,
         ease: 'power2.inOut',
-      },
-      0.5,
-    );
+        delay: 0.5,
+      });
+    }
   }
 
   // Check if GSAP and CustomEase are loaded before starting the loader

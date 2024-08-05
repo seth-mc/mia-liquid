@@ -14,7 +14,6 @@
 }
 
 .loader__left {
-  width: 33.33%;
   height: 100%;
   overflow: hidden;
 }
@@ -26,7 +25,6 @@
 }
 
 .loader__right {
-  width: 66.67%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -35,8 +33,17 @@
 }
 
 .loader__quote {
-  font-size: 2rem;
+  font-size: 1rem;
+  line-height: 2;
   margin-bottom: 2rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .loader__quote {
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
 }
 
 .loader__progress-container {
@@ -47,9 +54,9 @@
 }
 
 .loader__progress {
-  width: 0;
+  width: 0%;
   height: 100%;
-  background-color: #2a55eb;
+  transition: width 0.1s linear;
 }
 
 .loader__number {
