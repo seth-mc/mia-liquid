@@ -1,0 +1,39 @@
+{{ 'loader-full.css' | asset_url | stylesheet_tag }}
+
+<div class="loader" style="display: none;">
+  <div class="loader__content">
+    <div class="loader__left">
+      <img src="{{ section.settings.loader_image | img_url: 'master' }}" alt="Loader Image" class="loader__image">
+    </div>
+    <div class="loader__right">
+      <div class="font-auxmono md:text-lg sm:text-sm text-lg text-standard-blue mb-4 loader__quote">{{ section.settings.loader_quote }}</div>
+      <div class="loader__progress-container">
+        <div class="loader__progress color-standard-blue"></div>
+      </div>
+      <div class="loader__number font-auxmono text-standard-blue">0</div>
+    </div>
+  </div>
+</div>
+
+<div id="loader-trigger" style="display: none;"></div>
+
+{% schema %}
+{
+  "name": "Loader",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "loader_image",
+      "label": "Loader Image"
+    },
+    {
+      "type": "text",
+      "id": "loader_quote",
+      "label": "Loader Quote",
+      "default": "Fentanyl presence in the U.S. is skyrocketing — and coming into contact with just a few grains can kill you."
+    }
+  ]
+}
+{% endschema %}
+
+{{ 'loader-full.css' | asset_url | stylesheet_tag }}

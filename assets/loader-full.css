@@ -1,0 +1,57 @@
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 9999;
+}
+
+.loader__content {
+  display: flex;
+  height: 100%;
+}
+
+.loader__left {
+  width: 33.33%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.loader__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.loader__right {
+  width: 66.67%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.loader__quote {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.loader__progress-container {
+  width: 100%;
+  height: 4px;
+  background-color: #f0f0f0;
+  margin-bottom: 1rem;
+}
+
+.loader__progress {
+  width: 0;
+  height: 100%;
+  background-color: #2a55eb;
+}
+
+.loader__number {
+  font-size: 1.5rem;
+}

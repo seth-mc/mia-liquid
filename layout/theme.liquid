@@ -40,6 +40,7 @@
     <script src='{{ 'details-modal.js' | asset_url }}' defer='defer'></script>
     <script src='{{ 'search-form.js' | asset_url }}' defer='defer'></script>
 
+
     {%- if settings.animations_reveal_on_scroll -%}
       <script src='{{ 'animations.js' | asset_url }}' defer='defer'></script>
     {%- endif -%}
@@ -449,5 +450,11 @@
     <script src="https://unpkg.com/embla-carousel/embla-carousel.umd.js"></script>
     <script src="https://unpkg.com/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
     <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
+
+    {{ 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js' | script_tag }}
+    {{ 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/CustomEase.min.js' | script_tag }}
+    {{ 'loader.js' | asset_url | script_tag }}
+
+    {% section 'loader-full' %}
   </body>
 </html>
