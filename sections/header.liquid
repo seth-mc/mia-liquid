@@ -2,7 +2,7 @@
 <script src="{{ 'cart-slide.js' | asset_url }}" defer="defer"></script>
 
 
-<div> <!-- Adjusted padding-top for fixed header -->
+<div>
   <header id="header"
   class="fixed top-0 left-0 right-0 flex justify-center z-50 transition-transform duration-500 ease-out header-hidden">
   
@@ -18,7 +18,7 @@
         <div class="font-standard font-bold text-4xl text-standard-blue py-0.5 translate-x-0.5">m.i.a.</div>
       </a>
       <button id="cart-toggle"
-        class="font-american-typewriter text-xl text-standard-blue -translate-y-0.5 -translate-x-4 pr-2">
+        class="font-americantypewriter text-xl text-standard-blue -translate-y-0.5 -translate-x-4 pr-2">
         <span id="cart-count">
           {%- if cart != empty -%}
           ({{ cart.item_count }})
@@ -35,18 +35,21 @@
     style="max-height: 0;">
     <div class="mt-4 border-2 border-standard-blue px-8 py-4">
       <ul class="flex justify-between text-standard-blue">
-        <li><span class="font-standard">I.</span> <span class="font-american-typewriter uppercase">SHOP</span></li>
-        <li><span class="font-standard">II.</span> <span class="font-american-typewriter uppercase">ABOUT</span></li>
-        <li><span class="font-standard">III.</span> <span class="font-american-typewriter uppercase">ACCOUNT</span></li>
-      </ul>
+        {% for link in linklists[settings.header_menu].links %}
+          <li>
+            <span class="font-standard">{{ forloop.index | roman }}.</span>
+            <a href="{{ link.url }}" class="font-americantypewriter uppercase">{{ link.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
     </div>
     <div class="mt-4 border-2 border-standard-blue p-4">
-      <div id="dynamicLinks" class="flex flex-col space-y-2 text-standard-blue font-american-typewriter">
-        <span data-link="Answers">Answers</span>
-        <span data-link="Contact">Contact</span>
-        <span data-link="Stockists">Stockists</span>
-        <span data-link="Shipping & Returns">Shipping & Returns</span>
-        <span data-link="Instagram">Instagram</span>
+      <div id="dynamicLinks" class="flex flex-col space-y-2 text-standard-blue font-americantypewriter">
+        <a href="{{ settings.answers_link }}" data-link="Answers">Answers</a>
+        <a href="{{ settings.contact_link }}" data-link="Contact">Contact</a>
+        <a href="{{ settings.stockists_link }}" data-link="Stockists">Stockists</a>
+        <a href="{{ settings.shipping_returns_link }}" data-link="Shipping & Returns">Shipping & Returns</a>
+        <a href="{{ settings.instagram_link }}" data-link="Instagram">Instagram</a>
       </div>
     </div>
   </div>
@@ -61,7 +64,7 @@
           <li class="flex justify-between items-center">
             <span class="font-standard">{{ forloop.index }}.</span>
             <div class="flex-grow ml-4">
-              <span class="font-american-typewriter uppercase">{{ item.product.title }}</span>
+              <span class="font-americantypewriter uppercase">{{ item.product.title }}</span>
               <div class="flex items-center mt-2">
                 <button class="quantity-adjust" data-action="decrease" data-item="{{ item.key }}">-</button>
                 <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="w-12 text-center mx-2"
@@ -69,14 +72,14 @@
                 <button class="quantity-adjust" data-action="increase" data-item="{{ item.key }}">+</button>
               </div>
             </div>
-            <span class="font-american-typewriter">{{ item.final_line_price | money }}</span>
+            <span class="font-americantypewriter">{{ item.final_line_price | money }}</span>
             <button class="remove-item ml-4" data-item="{{ item.key }}">&times;</button>
           </li>
           {% endfor %}
         </ul>
       </div>
       <div class="mt-4 border-2 border-standard-blue p-4">
-        <div class="flex flex-col space-y-2 text-standard-blue font-american-typewriter">
+        <div class="flex flex-col space-y-2 text-standard-blue font-americantypewriter">
           <div class="flex justify-between items-center">
             <span>Total</span>
             <span>{{ cart.total_price | money }}</span>

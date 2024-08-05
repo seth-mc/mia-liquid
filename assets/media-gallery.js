@@ -7,55 +7,61 @@ class MediaGallery extends HTMLElement {
     this.nextBtnNode = this.querySelector('.embla__button--next');
     this.dotsNode = this.querySelector('.embla__dots');
 
-    console.log('MediaGallery constructed');
-    console.log('Viewport node:', this.viewportNode);
-    console.log('Prev button:', this.prevBtnNode);
-    console.log('Next button:', this.nextBtnNode);
-    console.log('Dots node:', this.dotsNode);
+    this.style.width = '100%';
+    this.style.height = '100%';
 
     if (typeof EmblaCarousel !== 'undefined') {
       this.init();
     } else {
-      console.log('EmblaCarousel not available, waiting for load event');
       window.addEventListener('load', () => this.init());
     }
   }
 
-  init() {
-    console.log('Initializing MediaGallery');
-    console.log('EmblaCarousel available:', typeof EmblaCarousel);
-    console.log('Viewport node HTML:', this.viewportNode.outerHTML);
+  connectedCallback() {
+    this.updateSize();
+    window.addEventListener('resize', () => this.updateSize());
+  }
 
+  updateSize() {
+    const containerWidth = this.offsetWidth;
+    const containerHeight = this.offsetHeight;
+
+    this.style.width = `${containerWidth}px`;
+    this.style.height = `${containerHeight}px`;
+
+    const viewport = this.querySelector('.embla__viewport');
+    if (viewport) {
+      viewport.style.width = `${containerWidth}px`;
+      viewport.style.height = `${containerHeight}px`;
+    }
+
+    // Force update on Embla if it's initialized
+    if (this.emblaApi) {
+      this.emblaApi.reInit();
+    }
+  }
+
+  init() {
     const OPTIONS = { loop: true };
     const PLUGINS = [EmblaCarouselAutoplay()];
     this.emblaApi = EmblaCarousel(this.viewportNode, OPTIONS, PLUGINS);
-
-    console.log('Embla initialized:', this.emblaApi);
-    console.log('Number of slides:', this.emblaApi.slideNodes().length);
-    console.log('Slide nodes:', this.emblaApi.slideNodes());
-
     this.setupPrevNextBtns();
     this.setupDotBtns();
 
+    this.updateSize();
+    window.addEventListener('resize', () => this.updateSize());
+
     this.emblaApi.on('destroy', () => {
-      console.log('Embla destroy event triggered');
       this.removePrevNextBtnsClickHandlers();
       this.removeDotBtnsAndClickHandlers();
-    });
-
-    this.emblaApi.on('select', () => {
-      console.log('Slide changed to:', this.emblaApi.selectedScrollSnap());
     });
   }
 
   setupPrevNextBtns() {
-    console.log('Setting up prev/next buttons');
     const scrollPrev = () => {
-      console.log('Scrolling to previous slide');
       this.emblaApi.scrollPrev();
     };
     const scrollNext = () => {
-      console.log('Scrolling to next slide');
       this.emblaApi.scrollNext();
     };
     this.prevBtnNode.addEventListener('click', scrollPrev, false);
@@ -64,8 +70,6 @@ class MediaGallery extends HTMLElement {
     const togglePrevNextBtnsState = () => {
       const canScrollPrev = this.emblaApi.canScrollPrev();
       const canScrollNext = this.emblaApi.canScrollNext();
-      console.log('Can scroll prev:', canScrollPrev);
-      console.log('Can scroll next:', canScrollNext);
       if (canScrollPrev) this.prevBtnNode.removeAttribute('disabled');
       else this.prevBtnNode.setAttribute('disabled', 'disabled');
       if (canScrollNext) this.nextBtnNode.removeAttribute('disabled');
@@ -84,23 +88,19 @@ class MediaGallery extends HTMLElement {
   }
 
   setupDotBtns() {
-    console.log('Setting up dot buttons');
     let dotNodes = [];
 
     const addDotBtnsWithClickHandlers = () => {
       const scrollSnaps = this.emblaApi.scrollSnapList();
-      console.log('Scroll snaps:', scrollSnaps);
       this.dotsNode.innerHTML = scrollSnaps
         .map(() => '<button class="embla__dot" type="button"></button>')
         .join('');
 
       dotNodes = Array.from(this.dotsNode.querySelectorAll('.embla__dot'));
-      console.log('Dot nodes created:', dotNodes.length);
       dotNodes.forEach((dotNode, index) => {
         dotNode.addEventListener(
           'click',
           () => {
-            console.log('Dot clicked:', index);
             this.emblaApi.scrollTo(index);
           },
           false,
@@ -111,8 +111,6 @@ class MediaGallery extends HTMLElement {
     const toggleDotBtnsActive = () => {
       const previous = this.emblaApi.previousScrollSnap();
       const selected = this.emblaApi.selectedScrollSnap();
-      console.log('Previous slide:', previous);
-      console.log('Selected slide:', selected);
       dotNodes[previous]?.classList.remove('embla__dot--selected');
       dotNodes[selected]?.classList.add('embla__dot--selected');
     };
@@ -128,6 +126,15 @@ class MediaGallery extends HTMLElement {
       this.dotsNode.innerHTML = '';
     };
   }
+
+  updateSize() {
+    const containerWidth = this.offsetWidth;
+    const containerHeight = this.offsetHeight;
+    // Update embla instance if necessary
+    if (this.emblaApi) {
+      this.emblaApi.reInit();
+    }
+  }
 }
 
 customElements.define('media-gallery', MediaGallery);
@@ -137,16 +144,39 @@ const style = document.createElement('style');
 style.textContent = `
   .embla {
     position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
   }
   .embla__viewport {
     overflow: hidden;
+    width: 100%;
+    height: 100%;
   }
   .embla__container {
     display: flex;
+    height: 100%;
   }
   .embla__slide {
     flex: 0 0 100%;
     min-width: 0;
+    height: 100%;
+  }
+  .product-media-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 100%; 
+  }
+  .product-media__image,
+  .product-media__preview-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .embla__button {
     position: absolute;

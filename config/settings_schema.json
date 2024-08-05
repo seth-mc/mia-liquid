@@ -1465,5 +1465,54 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "header_navigation",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Main Navigation"
+      },
+      {
+        "type": "link_list",
+        "id": "header_menu",
+        "label": "Menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "header",
+        "content": "Additional Links"
+      },
+      {
+        "type": "text",
+        "id": "answers_link",
+        "label": "Answers Page URL",
+        "default": "/pages/faq"
+      },
+      {
+        "type": "text",
+        "id": "contact_link",
+        "label": "Contact Page URL",
+        "default": "/pages/contact-us"
+      },
+      {
+        "type": "text",
+        "id": "stockists_link",
+        "label": "Stockists Page URL",
+        "default": "/pages/stockists"
+      },
+      {
+        "type": "text",
+        "id": "shipping_returns_link",
+        "label": "Shipping & Returns Page URL",
+        "default": "/pages/shipping-returns"
+      },
+      {
+        "type": "text",
+        "id": "instagram_link",
+        "label": "Instagram URL",
+        "default": "https://www.instagram.com/yourstore"
+      }
+    ]
   }
 ]

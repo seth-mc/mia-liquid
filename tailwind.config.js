@@ -11,10 +11,12 @@ module.exports = {
     extend: {
       fontFamily: {
         standard: ['Standard', 'sans-serif'],
-        'american-typewriter': ['American Typewriter', 'Courier', 'monospace'],
+        americantypewriter: ['American Typewriter', 'Courier', 'monospace'],
+        auxmono: ['Aux Mono', 'monospace'],
       },
       colors: {
         'standard-blue': '#2A55EB',
+        'darker-blue': '#20248B',
       },
     },
     screens: {

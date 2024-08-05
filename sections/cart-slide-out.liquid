@@ -1,11 +1,11 @@
 <div id="cart-slide-out" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
   <div class="p-4 h-full flex flex-col">
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-american-typewriter text-standard-blue">Your Cart</h2>
+      <h2 class="text-2xl font-americantypewriter text-standard-blue">Your Cart</h2>
       <button id="close-cart" class="text-standard-blue">&times;</button>
     </div>
 
-    <div class="font-american-typewriter text-standard-blue mb-4 grid grid-cols-3">
+    <div class="font-americantypewriter text-standard-blue mb-4 grid grid-cols-3">
       <span>Item</span>
       <span class="text-right">Price</span>
       <span class="text-right">Remove</span>
@@ -38,7 +38,7 @@
       {% endfor %}
     </ul>
 
-    <div class="mt-4 font-american-typewriter text-standard-blue">
+    <div class="mt-4 font-americantypewriter text-standard-blue">
       <div class="flex justify-between items-center mb-4">
         <span class="text-xl">Total</span>
         <span class="text-xl">{{ cart.total_price | money }}</span>

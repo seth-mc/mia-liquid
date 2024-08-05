@@ -49,22 +49,28 @@
     position: relative;
     max-width: 100%;
     margin: 0 auto;
+    width: 100%;
+    height: 100%;
   }
   .embla__viewport {
     overflow: hidden;
+    width: 100%;
+    height: 100%;
   }
   .embla__container {
     display: flex;
+    height: 100%;
   }
   .embla__slide {
     flex: 0 0 100%;
     min-width: 0;
+    height: 100%;
   }
   .product-media-container {
     position: relative;
     width: 100%;
-    height: 0;
-    padding-bottom: 100%; /* This creates a square aspect ratio */
+    height: 100%;
+    padding-bottom: 100%; 
   }
   .product-media__image,
   .product-media__preview-image {
@@ -75,6 +81,52 @@
     height: 100%;
     object-fit: cover;
   }
+  .embla__button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #2A55EB;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .embla__button--prev {
+    left: 10px;
+  }
+  .embla__button--next {
+    right: 10px;
+  }
+  .embla__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.embla__dot {
+  width: 5px;
+  height: 5px;
+  background: #2A55EB;
+  margin: 0 5px;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.embla__dot--selected {
+  width: 10px;
+  height: 10px;
+  transition: 0.3s;
+  background: #2A55EB;
+}
   .product-media__play-button,
   .product-media__model-button {
     position: absolute;
@@ -137,6 +189,16 @@
   transition: 0.3s;
   background: #2A55EB;
 }
+.embla, .embla__viewport, .embla__container, .embla__slide, .product-media-container {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .product-media__image,
+  .product-media__preview-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
 </style>
 <media-gallery id="MediaGallery-{{ section.id }}" class="product-carousel">
   <div class="embla">

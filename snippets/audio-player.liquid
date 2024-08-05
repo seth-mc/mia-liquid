@@ -1,0 +1,206 @@
+<div id="audio-visualizer-container" style="width: 300px; height: 300px;">
+  <div id="play-pause-button" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 1000; cursor: pointer; transition: opacity 0.4s ease, transform 0.4s ease;">
+    <svg id="play-icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="2rem" width="2rem" xmlns="http://www.w3.org/2000/svg">
+      <path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"></path>
+    </svg>
+    <svg id="pause-icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="2rem" width="2rem" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <path d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"></path>
+    </svg>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+
+<style>
+  #play-pause-button {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  #play-pause-button.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  #play-pause-button:active {
+    opacity: 50%;
+    transform: scale(0.25);
+  }
+</style>
+
+<script>
+  let audio, fft, amplitude;
+  let lowSamples = [], midSamples = [], highSamples = [];
+  let orbSize = 150;
+  let rotationFactor = 0.25;
+  let currentRotation = 0;
+  let targetRotation = 0;
+  let lerpAmount = 0.1;
+  let lowFreqColor, midFreqColor, highFreqColor;
+  let playPauseButton, playIcon, pauseIcon;
+
+  // Add this function to your existing JavaScript
+function centerAudioVisualizer() {
+  const container = document.querySelector('.audio-player-wrapper');
+  const visualizer = document.getElementById('audio-visualizer-container');
+  
+  if (container && visualizer) {
+    const containerWidth = container.offsetWidth;
+    const visualizerWidth = visualizer.offsetWidth;
+    
+    if (visualizerWidth > 0) {
+      const leftMargin = (containerWidth - visualizerWidth) / 2;
+      visualizer.style.marginLeft = `${leftMargin}px`;
+    } else {
+      // If the visualizer width is still 0, try again after a short delay
+      setTimeout(centerAudioVisualizer, 100);
+    }
+  }
+}
+
+// Call this function after the p5.js setup is complete
+document.addEventListener('DOMContentLoaded', function() {
+  // Your existing DOMContentLoaded code here
+
+  // Add this line to center the visualizer after it's loaded
+  setTimeout(centerAudioVisualizer, 500); // Adjust the delay as needed
+});
+
+// Also, call this function when the window is resized
+window.addEventListener('resize', centerAudioVisualizer);
+
+  new p5(function(p) {
+    p.preload = function() {
+      p.soundFormats('mp3');
+      audio = p.loadSound('{{ 'images-book-no-1.mp3' | asset_url }}');
+    };
+
+    p.setup = function() {
+      let canvas = p.createCanvas(300, 300, p.WEBGL);
+  canvas.parent('audio-visualizer-container');
+
+      fft = new p5.FFT(0.8, 64);
+      amplitude = new p5.Amplitude();
+
+      playPauseButton = document.getElementById('play-pause-button');
+      playIcon = document.getElementById('play-icon');
+      pauseIcon = document.getElementById('pause-icon');
+      playPauseButton.addEventListener('click', togglePlay);
+
+      lowFreqColor = p.color(34, 92, 176);
+      midFreqColor = p.color(255, 0, 0);
+      highFreqColor = p.color(0, 0, 255);
+
+      fft.setInput(audio);
+
+      // Show button after a short delay
+      setTimeout(() => {
+        playPauseButton.classList.add('visible');
+      }, 1000);
+
+      // Try to autoplay
+      p.userStartAudio().then(function() {
+        audio.loop();
+        updatePlayPauseButton(true);
+      }).catch(function(error) {
+        console.log("Autoplay failed:", error);
+        updatePlayPauseButton(false);
+      });
+      centerAudioVisualizer();
+    };
+
+    p.draw = function() {
+      p.background(255);
+
+      let dx = p.mouseX - p.width / 2;
+      let dy = p.mouseY - p.height / 2;
+      targetRotation = p.atan2(dy, dx) * rotationFactor;
+      currentRotation = p.lerp(currentRotation, targetRotation, lerpAmount);
+      p.rotateY(-currentRotation);
+
+      fft.analyze();
+      lowSamples = fft.waveform('bass');
+      midSamples = fft.waveform('mid');
+      highSamples = fft.waveform('treble');
+
+      drawOscilloscope(lowSamples, lowFreqColor, -20);
+      drawOscilloscope(midSamples, midFreqColor, 0);
+      drawOscilloscope(highSamples, highFreqColor, 20);
+    };
+
+    function drawOscilloscope(samples, lineColor, zOffset) {
+      p.push();
+      p.translate(0, 0, zOffset);
+      p.stroke(lineColor);
+      p.strokeWeight(2);
+      p.noFill();
+      p.beginShape();
+      for (let i = 0; i < samples.length; i++) {
+        let x = p.map(i, 0, samples.length, -orbSize / 2, orbSize / 2);
+        let y = p.map(samples[i], -1, 1, -orbSize / 4, orbSize / 4);
+        p.vertex(x, y, 0);
+      }
+      p.endShape();
+      p.pop();
+    }
+
+    function togglePlay() {
+      if (audio.isPlaying()) {
+        audio.pause();
+        updatePlayPauseButton(false);
+      } else {
+        audio.loop();
+        updatePlayPauseButton(true);
+      }
+    }
+
+    function updatePlayPauseButton(isPlaying) {
+      if (isPlaying) {
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+      } else {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+      }
+    }
+  });
+
+
+  // Add this function to your existing JavaScript
+function adjustLayout() {
+  const audioPlayerWrapper = document.getElementById('audio-player-wrapper');
+  const audioVisualizer = document.getElementById('audio-visualizer-container');
+  const mainContentWrapper = document.querySelector('.main-content-wrapper');
+
+  if (audioPlayerWrapper && audioVisualizer && mainContentWrapper) {
+    // Set the audio player to the background
+    audioPlayerWrapper.style.zIndex = '-1';
+    
+    // Get the height of the audio visualizer
+    const visualizerHeight = audioVisualizer.offsetHeight;
+    
+    // Set the top padding of the main content wrapper to the height of the visualizer
+    mainContentWrapper.style.paddingTop = `${visualizerHeight}px`;
+    
+    // Center the audio visualizer
+    const containerWidth = audioPlayerWrapper.offsetWidth;
+    const visualizerWidth = audioVisualizer.offsetWidth;
+    if (visualizerWidth > 0) {
+      const leftMargin = (containerWidth - visualizerWidth) / 2;
+      audioVisualizer.style.marginLeft = `${leftMargin}px`;
+    }
+  }
+}
+
+// Call this function after the p5.js setup is complete and when the window is resized
+document.addEventListener('DOMContentLoaded', function() {
+  // Your existing DOMContentLoaded code here
+
+  // Add this line to adjust the layout after it's loaded
+  setTimeout(adjustLayout, 500); // Adjust the delay as needed
+});
+
+// Also, call this function when the window is resized
+window.addEventListener('resize', adjustLayout);
+</script>
+
+

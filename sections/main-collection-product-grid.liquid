@@ -36,162 +36,116 @@
   }
 {%- endstyle -%}
 
-<div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
-  {%- paginate collection.products by section.settings.products_per_page -%}
-    {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
-    {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
-      <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
-        <form class="facets-vertical-form" id="FacetSortForm">
-          <div class="facet-filters sorting caption">
-            <div class="facet-filters__field">
-              <h2 class="facet-filters__label caption-large text-body">
-                <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
-              </h2>
-              <div class="select">
-                {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-                <select
-                  name="sort_by"
-                  class="facet-filters__sort select__select caption-large"
-                  id="SortBy"
-                  aria-describedby="a11y-refresh-page-message"
-                >
-                  {%- for option in collection.sort_options -%}
-                    <option
-                      value="{{ option.value | escape }}"
-                      {% if option.value == sort_by %}
-                        selected="selected"
-                      {% endif %}
-                    >
-                      {{ option.name | escape }}
-                    </option>
-                  {%- endfor -%}
-                </select>
-                {% render 'icon-caret' %}
-              </div>
-            </div>
-          </div>
-
-          <div class="product-count-vertical light" role="status">
-            <h2 class="product-count__text text-body">
-              <span id="ProductCountDesktop">
-                {%- if collection.results_count -%}
-                  {{
-                    'templates.search.results_with_count'
-                    | t: terms: collection.terms, count: collection.results_count
-                  }}
-                {%- elsif collection.products_count == collection.all_products_count -%}
-                  {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
-                {%- else -%}
-                  {{
-                    'products.facets.product_count'
-                    | t: product_count: collection.products_count, count: collection.all_products_count
-                  }}
-                {%- endif -%}
-              </span>
-            </h2>
-            {%- render 'loading-spinner' -%}
-          </div>
-        </form>
-      </facet-filters-form>
-    {%- endif -%}
-
-    <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
-      {{ 'component-facets.css' | asset_url | stylesheet_tag }}
-      <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
-      {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
-        <aside
-          aria-labelledby="verticalTitle"
-          class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-          id="main-collection-filters"
-          data-id="{{ section.id }}"
-        >
-          {% render 'facets',
-            results: collection,
-            enable_filtering: section.settings.enable_filtering,
-            enable_sorting: section.settings.enable_sorting,
-            filter_type: section.settings.filter_type,
-            paginate: paginate
-          %}
-        </aside>
-      {%- endif -%}
-
-      <div
-        class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-        id="ProductGridContainer"
-        {% if settings.animations_reveal_on_scroll %}
-          data-cascade
+<div class="w-full bg-white">
+  <div class="w-[90vw] sm:w-[85vw] lg:w-[60vw] max-w-[880px] mx-auto py-12 sm:py-16 lg:py-20">
+    {% paginate collection.products by section.settings.products_per_page %}
+      <div class="mb-8 sm:mb-12 lg:mb-16">
+        <h1 class="font-standard font-bold text-4xl sm:text-5xl lg:text-6xl text-standard-blue mb-4">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+          <div class="font-auxmono text-standard-blue text-lg">{{ collection.description }}</div>
         {% endif %}
-      >
-        {%- if collection.products.size == 0 -%}
-          <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
-            <div class="loading-overlay gradient"></div>
-            <div class="title-wrapper center">
-              <h2 class="title title--primary">
-                {{ 'sections.collection_template.empty' | t -}}
-                <br>
-                {{
-                  'sections.collection_template.use_fewer_filters_html'
-                  | t: link: collection.url, class: 'underlined-link link'
-                }}
-              </h2>
+      </div>
+
+      {% if section.settings.enable_sorting or section.settings.enable_filtering %}
+        <div class="flex flex-wrap items-center justify-between mb-8">
+          {% if section.settings.enable_sorting %}
+            <div class="w-full md:w-auto mb-4 md:mb-0">
+              <label for="SortBy" class="font-auxmono text-standard-blue mr-2">{{ 'products.facets.sort_by_label' | t }}</label>
+              <select id="SortBy" class="font-auxmono text-standard-blue border-2 border-standard-blue px-2 py-1 rounded-md">
+                {%- for option in collection.sort_options -%}
+                  <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+                    {{ option.name }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {% endif %}
+
+          {% if section.settings.enable_filtering %}
+            <div class="w-full md:w-auto">
+              <button id="FilterToggle" class="font-auxmono text-standard-blue border-2 border-standard-blue px-4 py-2 rounded-md hover:bg-standard-blue hover:text-white transition-colors duration-300">
+                {{ 'products.facets.filter_button' | t }}
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-{{ section.settings.columns_desktop }} gap-6 sm:gap-8 lg:gap-10">
+        {% for product in collection.products %}
+          <div class="relative overflow-hidden border-2 border-standard-blue{% if settings.animations_reveal_on_scroll %} opacity-0 translate-y-8 transition-all duration-500 ease-out{% endif %}" data-product-id="{{ product.id }}">
+            <a href="{{ product.url }}" class="block aspect-square overflow-hidden">
+              {% if product.featured_image != blank %}
+                <img 
+                  src="{{ product.featured_image | img_url: '535x535', crop: 'center' }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  class="w-full h-full object-cover transition-all duration-300 ease-in-out transform hover:scale-105"
+                >
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover bg-gray-100' }}
+              {% endif %}
+            </a>
+            <div class="absolute bottom-0 left-0 right-0 bg-white bg-opacity-90 p-4">
+              <h2 class="font-standard text-lg sm:text-xl text-standard-blue mb-2">{{ product.title }}</h2>
+              <div class="font-auxmono text-standard-blue">
+                {% if product.compare_at_price > product.price %}
+                  <span class="line-through mr-2">{{ product.compare_at_price | money }}</span>
+                {% endif %}
+                <span>{{ product.price | money }}</span>
+              </div>
+              {% if section.settings.quick_add != 'none' %}
+                <button class="mt-2 w-full bg-standard-blue text-white font-auxmono rounded-md py-2 px-4 text-sm text-center transition-colors duration-300 hover:bg-blue-700">
+                  {{ 'products.product.add_to_cart' | t }}
+                </button>
+              {% endif %}
             </div>
           </div>
-        {%- else -%}
-          <div
-            class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-          >
-            <div class="loading-overlay gradient"></div>
-            <ul
-              id="product-grid"
-              data-id="{{ section.id }}"
-              class="
-                grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
-                grid--{{ section.settings.columns_desktop }}-col-desktop
-                {% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}
-              "
-            >
-              {% assign skip_card_product_styles = false %}
-              {%- for product in collection.products -%}
-                {% assign lazy_load = false %}
-                {%- if forloop.index > 2 -%}
-                  {%- assign lazy_load = true -%}
-                {%- endif -%}
-                <li
-                  class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                  {% if settings.animations_reveal_on_scroll %}
-                    data-cascade
-                    style="--animation-order: {{ forloop.index }};"
-                  {% endif %}
-                >
-                  {% render 'card-product',
-                    card_product: product,
-                    media_aspect_ratio: section.settings.image_ratio,
-                    image_shape: section.settings.image_shape,
-                    show_secondary_image: section.settings.show_secondary_image,
-                    show_vendor: section.settings.show_vendor,
-                    show_rating: section.settings.show_rating,
-                    lazy_load: lazy_load,
-                    skip_styles: skip_card_product_styles,
-                    quick_add: section.settings.quick_add,
-                    section_id: section.id
-                  %}
-                </li>
-                {%- assign skip_card_product_styles = true -%}
-              {%- endfor -%}
-            </ul>
-
-            {%- if paginate.pages > 1 -%}
-              {% render 'pagination', paginate: paginate, anchor: '' %}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
+        {% endfor %}
       </div>
-    </div>
-  {%- endpaginate -%}
-  {% if section.settings.image_shape == 'arch' %}
-    {% render 'mask-arch' %}
-  {%- endif -%}
+
+      {% if paginate.pages > 1 %}
+        <div class="flex justify-center mt-12">
+          {% render 'pagination', paginate: paginate %}
+        </div>
+      {% endif %}
+    {% endpaginate %}
+  </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const sortSelect = document.getElementById('SortBy');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', (e) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort_by', e.currentTarget.value);
+        window.location = url.href;
+      });
+    }
+
+    const filterToggle = document.getElementById('FilterToggle');
+    if (filterToggle) {
+      filterToggle.addEventListener('click', () => {
+        // Implement filter toggle functionality here
+        console.log('Filter toggle clicked');
+      });
+    }
+
+    const animatedElements = document.querySelectorAll('[data-product-id]');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('opacity-0', 'translate-y-8');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    animatedElements.forEach(el => observer.observe(el));
+  });
+</script>
 
 {% schema %}
 {
