@@ -362,6 +362,10 @@
       if (Shopify.designMode) {
         document.documentElement.classList.add('shopify-design-mode');
       }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.overscrollBehavior = 'none';
+      });
     </script>
   </head>
 
@@ -439,5 +443,9 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src='{{ 'cart-drawer.js' | asset_url }}' defer='defer'></script>
     {%- endif -%}
+
+    <script src="https://unpkg.com/embla-carousel/embla-carousel.umd.js"></script>
+    <script src="https://unpkg.com/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
+    <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>

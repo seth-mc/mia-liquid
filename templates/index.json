@@ -1,35 +1,78 @@
 {
   "sections": {
-    "featured_collection": {
-      "type": "featured-collection",
+    "featured_product_jqkA3U": {
+      "type": "featured-product",
+      "blocks": {
+        "text_RUQhr3": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_c6GcVj": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "price_6cDR8B": {
+          "type": "price",
+          "settings": {
+          }
+        },
+        "variant_picker_9wmQ6H": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_Wj3PQ3": {
+          "type": "quantity_selector",
+          "settings": {
+          }
+        },
+        "buy_buttons_77E3kg": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_ehjDRE": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_RUQhr3",
+        "title_c6GcVj",
+        "price_6cDR8B",
+        "variant_picker_9wmQ6H",
+        "quantity_selector_Wj3PQ3",
+        "buy_buttons_77E3kg",
+        "share_ehjDRE"
+      ],
       "settings": {
-        "title": "",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
+        "product": "bulk-fentanyl-test-wipe-x-25",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
         "padding_bottom": 36
       }
     }
   },
   "order": [
-    "featured_collection"
+    "featured_product_jqkA3U"
   ]
 }
