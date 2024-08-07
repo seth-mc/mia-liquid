@@ -88,20 +88,27 @@
   "type": "image_picker",
   "id": "step3_icon",
   "label": "Step 3 Icon"
-  }
+  },
+  {
+      "type": "text",
+      "id": "events_heading",
+      "label": "Events Section Heading",
+      "default": "Upcoming Events"
+    }
   ],
   "presets": [
-  {
-  "name": "Product Showcase",
-  "category": "Product"
-  }
+    {
+      "name": "Product Showcase",
+      "category": "Product"
+    }
   ]
   }
   {% endschema %}
   
   {% assign product = section.settings.product %}
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
-  
+  {% assign upcoming_events = product.metafields.custom.upcoming_events.value %}
+
   <style>
     .button-style {
       background-color: #0000FF;
@@ -136,6 +143,32 @@
     .product-showcase ul li {
       margin-bottom: 10px;
     }
+
+    .event-day {
+    -webkit-text-stroke: 2px #2A55EB;
+    paint-order: stroke fill;
+  }
+
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .event-slide-in {
+    animation: slideInFromRight 1s ease-out forwards;
+    opacity: 0;
+  }
+
+  .event-hidden {
+    opacity: 0;
+    transform: translateX(100%);
+  }
   </style>
   
   <div id="product-showcase-{{ section.id }}" class="w-full overflow-hidden h-screen">
@@ -180,14 +213,14 @@
         </div>
 
         <!-- Column 3 - 50% width on large screens, full width on medium and small screens -->
-        <div class="w-full lg:w-1/2 p-4 lg:overflow-y-auto">
-          <div class="h-full flex flex-col justify-center">
-            <div class="mb-8">
-              <h3 class="text-xl font-standard mb-2">Customer Testimony</h3>
-              <p class="font-aux-mono">{{ section.settings.testimony }}</p>
-            </div>
+    <div class="w-full lg:w-1/2 p-4 lg:overflow-y-auto">
+    <div class="h-full flex flex-col justify-center">
+      <div class="mb-8">
+        <h3 class="text-xl font-standard mb-2">Customer Testimony</h3>
+        <p class="font-aux-mono">{{ section.settings.testimony }}</p>
+      </div>
 
-            <h3 class="text-xl text-standard-blue font-standard mb-4">How does m.i.a. work?</h3>
+      <h3 class="text-xl text-standard-blue font-standard mb-4">How does m.i.a. work?</h3>
             <div class="mt-20 mb-20 flex flex-row overflow-x-auto">
   {% for i in (1..3) %}
     <div class="flex flex-col items-center flex-shrink-0 w-1/3 px-2">
@@ -221,15 +254,102 @@
                 If any part of the wipe turns <span class="text-red-500">red</span>, toss the substance away.
               </p>
             </div>
-            <div class="flex justify-center">
-              <a href="{{ section.settings.events_url }}" class="border-2 border-standard-blue text-standard-blue font-auxmono rounded-md py-4 px-8 w-[80%] max-w-[300px] text-center inline-block transition-colors duration-300 mt-4 mb-4 active:bg-standard-blue active:text-white hover:bg-standard-blue hover:text-white">Upcoming Events</a>
+            <h3 class="text-4xl pb-8 text-standard-blue font-standard font-bold mb-6">{{ section.settings.events_heading }}</h3>
+<div class="space-y-6">
+  {% for event in upcoming_events %}
+    {% assign event_date = event.date | date: '%s' | plus: 0 %}
+    {% assign current_date = 'now' | date: '%s' | plus: 0 %}
+    {% if event_date >= current_date %}
+            <div class="grid grid-cols-[auto,1fr,auto] gap-4 items-start">
+              <div class="flex flex-col items-start">
+                <span class="font-standard text-standard-blue text-sm font-bold uppercase">{{ event.date | date: '%b' }}</span>
+                <span class="font-standard text-white text-5xl font-bold event-day">{{ event.date | date: '%d' }}</span>
               </div>
-          </div>
-        </div>
+              <div>
+                <h4 class="font-standard text-standard-blue text-2xl font-bold leading-tight">{{ event.title }}</h4>
+                <p class="font-standard text-darker-blue text-sm mt-1">{{ event.venue }}, {{ event.location }}</p>
+              </div>
+              <div class="flex items-center">
+                <a href="" target="_blank" rel="noopener noreferrer" class="border-2 border-standard-blue text-standard-blue font-auxmono text-sm rounded-md py-2 px-4 text-center inline-block transition-colors duration-300 hover:bg-standard-blue hover:text-white active:bg-standard-blue active:text-white">
+                  Prepare now
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var productMetafield = {{ product.metafields.custom.upcoming_events.value | json }};
+  if (productMetafield && Array.isArray(productMetafield)) {
+    var eventsContainer = document.querySelector('.space-y-6');
+    eventsContainer.innerHTML = ''; // Clear existing content
+    
+    var currentDate = new Date();
+    
+    productMetafield.forEach(function(event, index) {
+      var eventDate = new Date(event.date);
+      if (eventDate >= currentDate) {
+        var eventElement = document.createElement('div');
+        eventElement.className = 'grid grid-cols-[auto,1fr,auto] gap-4 items-start event-hidden';
+        eventElement.innerHTML = `
+          <div class="flex flex-col items-start">
+            <span class="font-standard text-standard-blue text-sm font-bold uppercase">${eventDate.toLocaleString('default', { month: 'short' })}</span>
+            <span class="font-standard text-white text-5xl font-bold event-day">${eventDate.getDate().toString().padStart(2, '0')}</span>
+          </div>
+          <div>
+            <h4 class="font-standard text-standard-blue text-2xl font-bold leading-tight">${event.title}</h4>
+            <p class="font-standard text-darker-blue text-sm mt-1">${event.venue}, ${event.location}</p>
+          </div>
+          <div class="flex items-center">
+            <a href="" target="_blank" rel="noopener noreferrer" class="border-2 border-standard-blue text-standard-blue font-auxmono text-sm rounded-md py-2 px-4 text-center inline-block transition-colors duration-300 hover:bg-standard-blue hover:text-white active:bg-standard-blue active:text-white">
+              Prepare now
+            </a>
+          </div>
+        `;
+        eventsContainer.appendChild(eventElement);
+      }
+    });
+
+    // Function to start the animation
+    function startAnimation() {
+      var events = document.querySelectorAll('.event-hidden');
+      events.forEach(function(event, index) {
+        setTimeout(function() {
+          event.classList.remove('event-hidden');
+          event.classList.add('event-slide-in');
+        }, index * 200); // Stagger the animations
+      });
+    }
+
+    // Check if the page loader exists
+    var pageLoader = document.querySelector('#page-loader'); // Replace with your actual page loader selector
+    if (pageLoader) {
+      // If the page loader exists, wait for it to be hidden
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+            if (pageLoader.style.display === 'none') {
+              startAnimation();
+              observer.disconnect();
+            }
+          }
+        });
+      });
+
+      observer.observe(pageLoader, { attributes: true });
+    } else {
+      // If there's no page loader, start the animation immediately
+      startAnimation();
+    }
+  }
+});
+</script>
 
 <style>
   @media (max-width: 1023px) {
