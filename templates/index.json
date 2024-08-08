@@ -1,74 +1,30 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
 {
   "sections": {
     "featured_product_jqkA3U": {
       "type": "featured-product",
-      "blocks": {
-        "text_RUQhr3": {
-          "type": "text",
-          "settings": {
-            "text": "{{ section.settings.product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
-        "title_c6GcVj": {
-          "type": "title",
-          "settings": {
-            "heading_size": "h1"
-          }
-        },
-        "price_6cDR8B": {
-          "type": "price",
-          "settings": {
-          }
-        },
-        "variant_picker_9wmQ6H": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
-          }
-        },
-        "quantity_selector_Wj3PQ3": {
-          "type": "quantity_selector",
-          "settings": {
-          }
-        },
-        "buy_buttons_77E3kg": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
-          }
-        },
-        "share_ehjDRE": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
-          }
-        }
-      },
-      "block_order": [
-        "text_RUQhr3",
-        "title_c6GcVj",
-        "price_6cDR8B",
-        "variant_picker_9wmQ6H",
-        "quantity_selector_Wj3PQ3",
-        "buy_buttons_77E3kg",
-        "share_ehjDRE"
-      ],
       "settings": {
         "product": "bulk-fentanyl-test-wipe-x-25",
-        "color_scheme": "",
-        "secondary_background": false,
-        "media_size": "medium",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": false,
-        "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "main_heading": "Protect yourself with m.i.a. Fentanyl detection wipes.",
+        "sub_heading": "Fentanyl presence in the U.S. is skyrocketing — and coming into contact with just a few grains can kill you.",
+        "intro_text": "Never leave your safety up to chance. m.i.a. is on-the-spot detection you can bring with you to festivals and nights out.",
+        "feature_list": "<ul><li>unlike other tests, m.i.a does not contain harsh chemicals.<br\/><\/li><li>take with you anywhere — know in seconds with instant detection.<br\/><\/li><li>test discreetly without drawing attention.<\/li><\/ul>",
+        "learn_more_url": "\/pages\/about-us",
+        "closing_statement": "Never leave your safety up to chance",
+        "testimony": "★★★★★ — m.i.a. gives me peace of mind",
+        "step1_text": "identify a powder you want to test.",
+        "step2_text": "don included protective gloves",
+        "step3_text": "analyze the results",
+        "events_url": "",
+        "events_heading": "m.i.a for upcoming events:"
       }
     }
   },
