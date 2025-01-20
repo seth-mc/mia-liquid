@@ -1,23 +1,23 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "featured_product_jqkA3U": {
       "type": "featured-product",
       "settings": {
         "product": "bulk-fentanyl-test-wipe-x-25",
-        "main_heading": "Protect yourself with m.i.a. Fentanyl detection wipes.",
-        "sub_heading": "Fentanyl presence in the U.S. is skyrocketing — and coming into contact with just a few grains can kill you.",
-        "intro_text": "Never leave your safety up to chance. m.i.a. is on-the-spot detection you can bring with you to festivals and nights out.",
-        "feature_list": "<ul><li>unlike other tests, m.i.a does not contain harsh chemicals.<br\/><\/li><li>take with you anywhere — know in seconds with instant detection.<br\/><\/li><li>test discreetly without drawing attention.<\/li><\/ul>",
-        "learn_more_url": "\/pages\/about-us",
+        "main_heading": "Goodfight",
+        "sub_heading": "Supplements",
+        "intro_text": "Supplements",
+        "feature_list": "<p>Supplements</p>",
+        "learn_more_url": "/pages/about-us",
         "closing_statement": "Never leave your safety up to chance",
         "testimony": "★★★★★ — m.i.a. gives me peace of mind",
         "step1_text": "identify a powder you want to test.",
