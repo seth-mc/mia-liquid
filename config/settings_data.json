@@ -1,15 +1,15 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
-    "logo": "shopify:\/\/shop_images\/Mia-Black.png",
+    "logo": "shopify://shop_images/Mia-Black.png",
     "logo_width": 80,
     "type_header_font": "din_neuzeit_grotesk_n3",
     "heading_scale": 100,
@@ -131,9 +131,7 @@
       },
       "main-password-footer": {
         "type": "main-password-footer",
-        "custom_css": [
-
-        ],
+        "custom_css": [],
         "settings": {
           "color_scheme": "scheme-1"
         }
@@ -141,14 +139,12 @@
       "loader-full": {
         "type": "loader-full",
         "settings": {
-          "loader_image": "shopify:\/\/shop_images\/MIA_Web_Project_Scope.png",
-          "loader_quote": "Fentanyl is flooding into the U.S. — a few grains cut into recreational drugs will kill you instantly. Ensure you're not missing in action..."
+          "loader_image": "shopify://shop_images/sitebanner.png",
+          "loader_quote": "the quiet pursuit of better."
         }
       }
     },
-    "content_for_index": [
-
-    ],
+    "content_for_index": [],
     "color_schemes": {
       "scheme-1": {
         "settings": {
